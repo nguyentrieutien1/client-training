@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- Latest compiled and minified CSS & JS -->
+    <link
+      rel="stylesheet"
+      media="screen"
+      href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
+    />
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  </head>
+  <style>
+    .col-xs-5 {
+      margin: 200px 0 0 600px;
+    }
+  </style>
+  <body>
+    <div class="row">
+      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-4">
+        <form action="" method="POST" role="form">
+          <legend>Form Register</legend>
+
+          <div class="form-group">
+            <label for="">email</label>
+            <input
+              type="text"
+              class="form-control email"
+              placeholder="enter email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="">password</label>
+            <input
+              type="text"
+              class="form-control password"
+              placeholder="enter password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="">re-password</label>
+            <input
+              type="text"
+              class="form-control repassword"
+              placeholder="enter repassword"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary register">
+            Register
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+    const email = document.querySelector(".email");
+    const password = document.querySelector(".password");
+    const rePassword = document.querySelector(".repassword");
+    const registerBtn = document.querySelector(".register");
+
+    let emailValue, passwordValue, rePasswordValue;
+    email.onchange = function (event) {
+      emailValue = event.target.value;
+    };
+    password.onchange = function (event) {
+      passwordValue = event.target.value;
+    };
+    rePassword.onchange = function (event) {
+      rePasswordValue = event.target.value;
+    };
+    registerBtn.onclick = function (event) {
+      event.preventDefault();
+      console.log(emailValue, passwordValue, rePasswordValue);
+      fetch("http://localhost:1234/register", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify({
+          email: emailValue,
+          password: passwordValue,
+          repassword: rePasswordValue,
+        }), // body data type must match "Content-Type" header
+      })
+        .then(function (result) {
+          return result.json();
+        })
+        .then(function (data) {
+          const { message, statusCode } = data.result;
+          if (statusCode === 200) {
+            window.location.replace("./../login/index.html");
+            alert(message);
+          } else {
+            alert(message);
+          }
+        });
+    };
+  </script>
+</html>
